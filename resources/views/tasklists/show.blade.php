@@ -8,8 +8,8 @@
             <td>{{ $tasklists->id }}</td>
         </tr>
         <tr>
-            <th>タイトル</th>
-            <td>{{ $tasklists->title }}</td>
+            <th>ステータス</th>
+            <td>{{ $tasklists->status }}</td>
         </tr>
         <tr>
             <th>メッセージ</th>
