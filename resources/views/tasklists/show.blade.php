@@ -2,25 +2,25 @@
 
 @section('content')
 
-        <h1>id: {{ $tasklists->id }} のタスク詳細ページ</h1>
+        <h1>id: {{ $tasklist->id }} のタスク詳細ページ</h1>
 
         <table class="table table-bordered">
         <tr>
             <th>id</th>
-            <td>{{ $tasklists->id }}</td>
+            <td>{{ $tasklist->id }}</td>
         </tr>
         <tr>
             <th>ステータス</th>
-            <td>{{ $tasklists->status }}</td>
+            <td>{{ $tasklist->status }}</td>
         </tr>
         <tr>
             <th>タスク</th>
-            <td>{{ $tasklists->content }}</td>
+            <td>{{ $tasklist->content }}</td>
         </tr>
     </table>
     
-     {!! link_to_route('tasklists.edit', 'このタスクを編集', ['id' => $tasklists->id], ['class' => 'btn btn-default']) !!}
-     {!! Form::model($tasklists, ['route' => ['tasklists.destroy', $tasklists->id], 'method' => 'delete']) !!}
+     {!! link_to_route('tasklists.edit', 'このタスクを編集', ['id' => $tasklist->id], ['class' => 'btn btn-default']) !!}
+     {!! Form::model($tasklist, ['route' => ['tasklists.destroy', $tasklist->id], 'method' => 'delete']) !!}
      {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
      {!! Form::close() !!}
     

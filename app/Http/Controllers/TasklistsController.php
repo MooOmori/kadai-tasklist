@@ -16,9 +16,20 @@ class TasklistsController extends Controller
     {
          $tasklists = Task::all();
 
-        return view('tasklists.index', [
-            'tasklists' => $tasklists,
-        ]);
+        $data = [];
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            $tasklists = $user->tasklists()->orderBy('created_at', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasklists' => $tasklists,
+            ];
+            
+            return view('tasklists.index', $data);
+        }else {
+            return view('welcome');
+        }
     }
 
     /**
@@ -47,9 +58,14 @@ class TasklistsController extends Controller
                                 'content'=> 'required|max:10',]);
        
         $tasklist = new Task;
+        $tasklist->user_id = \Auth::user()->id;
         $tasklist->status = $request->status; 
         $tasklist->content = $request->content;
         $tasklist->save();
+        
+        // $request->user()->tasklists()->create([
+        //     'content' => $request->content,
+        // ]);
 
         return redirect('/');
     }
@@ -62,11 +78,16 @@ class TasklistsController extends Controller
      */
     public function show($id)
     {
-         $tasklists = Task::find($id);
-
-        return view('tasklists.show', [
-            'tasklists' => $tasklists,
+         $tasklist = Task::find($id);
+         
+        if (\Auth::id() === $tasklist->user_id) {
+            
+            return view('tasklists.show', [
+            'tasklist'=> $tasklist,
         ]);
+        }else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -79,9 +100,14 @@ class TasklistsController extends Controller
     {
         $tasklist = Task::find($id);
 
-        return view('tasklists.edit', [
-            'tasklist' => $tasklist,
+        if (\Auth::id() === $tasklist->user_id) {
+            
+            return view('tasklists.edit', [
+            'tasklist'=> $tasklist,
         ]);
+        }else {
+            return redirect('/');
+        }
     }
 
     /**
